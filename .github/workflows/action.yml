@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build_lint_etc:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install zerotier-one
+        run: curl -s https://install.zerotier.com/ | sudo bash
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Set authtoken
+        run: echo "AUTH_TOKEN=$(sudo cat /var/lib/zerotier-one/authtoken.secret)" >> $GITHUB_ENV
+
+      - name: Run tests
+        run: npm test
+
+      - name: Archive built docs html
+        uses: actions/upload-artifact@v4
+        with:
+          name: index.html
+          path: dist/index.html
+
+      - name: Archive built openapi spec
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi.yaml
+          path: tsp-output/@typespec/openapi3/openapi.yaml
+
+      - name: Archive built json schema
+        uses: actions/upload-artifact@v4
+        with:
+          name: json-schema.json
+          path: tsp-output/@typespec/json-schema/json-schema.json
