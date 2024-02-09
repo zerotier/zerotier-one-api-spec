@@ -1,0 +1,40 @@
+name: npm version && npm publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      newversion:
+        description: 'npm version {major,minor,patch}'
+        required: true
+permissions:
+  contents: write
+jobs:
+  version_and_release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        # fetch full history so things like auto-changelog work properly
+        fetch-depth: 0
+
+    - name: Install zerotier-one
+      run: curl -s https://install.zerotier.com/ | sudo bash
+
+    - name: Set auth token
+      run: echo "AUTH_TOKEN=$(sudo cat /var/lib/zerotier-one/authtoken.secret)" >> $GITHUB_ENV
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - run: npm ci
+    - run: npm run build
+    - run: npm test
+    - run: git config --global user.email "travis.laduke@zerotier.com"
+    - run: git config --global user.name "travis laduke"
+    - run: npm version ${{ github.event.inputs.newversion }}
+    - run: npm run release
+      env:
+        GH_RELEASE_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
