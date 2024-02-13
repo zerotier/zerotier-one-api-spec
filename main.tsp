@@ -23,7 +23,7 @@ using TypeSpec.JsonSchema;
 <p>API requests must be authenticated via an authentication token. ZeroTier One saves this token in the authtoken.secret file in its working directory. This token may be supplied via the X-ZT1-Auth HTTP request header. </p>
 <p>For example: <code>curl -H "X-ZT1-Auth: $TOKEN" http://localhost:9993/status</code> </p>
 <p>The token can be found in: <ul> <li>Mac :: ~/Library/Application Support/ZeroTier/authtoken.secret</li> <li>Windows :: \\ProgramData\\ZeroTier\\One</li> <li>Linux :: /var/lib/zerotier-one</li> </ul> </p>
-<p>You can get the OpenAPI spec here as well: <code>https://docs.zerotier.com/openapi/servicev1.json</code></p>
+<p>Learn more about the spec at <a href="https://github.com/zerotier/zerotier-one-api-spec">github</a></p>
 """)
 namespace Root {
   @tag("Node Status")
