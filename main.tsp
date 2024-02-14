@@ -1,6 +1,7 @@
 import "@typespec/http";
 import "@typespec/openapi";
 import "@typespec/json-schema";
+import "./variables.tsp";
 
 using TypeSpec.Http;
 using TypeSpec.OpenAPI;
@@ -8,7 +9,7 @@ using TypeSpec.JsonSchema;
 
 @service({
   title: "ZeroTierOne Service",
-  version: "2024-02-13::1.12.2",
+  version: Version,
 })
 @info({
   license: {

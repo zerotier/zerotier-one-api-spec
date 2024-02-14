@@ -6,7 +6,7 @@
     "test": "tsx test/*test.ts",
     "build": "run-s pre-compile compile lint build:*",
     "lint": "run-p lint:*",
-    "pre-compile": "run-p depcheck format-spec format-code",
+    "pre-compile": "run-p depcheck format-spec format-code variables",
     "build:doc-html": "redocly build-docs tsp-output/@typespec/openapi3/openapi.yaml -o ./dist/index.html",
     "pretest": "openapi-typescript tsp-output/@typespec/openapi3/openapi.yaml -o /tmp/schema.ts",
     "clean": "rm -rf dist tsp-output",
@@ -19,6 +19,7 @@
     "gh:tag": "git tag -d v${npm_package_version}; git tag v${npm_package_version}",
     "release": "npm run gh:tag && git push --tags && gh-release -y -a=tsp-output/@typespec/openapi3/openapi.yaml,tsp-output/@typespec/json-schema/json-schema.json",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
+    "variables": "printf 'alias Version = \"%s\";\n' $npm_package_version > variables.tsp",
     "watch": "run-p watch:*",
     "watch:compile": "npm run compile -- --watch",
     "watch:serve": "redocly preview-docs ./tsp-output/@typespec/openapi3/openapi.yaml --use-community-edition"
