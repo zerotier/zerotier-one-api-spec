@@ -1,11 +1,8 @@
-name: npm version && npm publish
+name: tag and release
 
 on:
   workflow_dispatch:
-    inputs:
-      newversion:
-        description: 'npm version {major,minor,patch}'
-        required: true
+
 permissions:
   contents: write
 jobs:
@@ -28,13 +25,9 @@ jobs:
       with:
         node-version: 18
         cache: 'npm'
-
     - run: npm ci
     - run: npm run build
     - run: npm test
-    - run: git config --global user.email "travis.laduke@zerotier.com"
-    - run: git config --global user.name "travis laduke"
-    - run: npm version ${{ github.event.inputs.newversion }}
     - run: npm run release
       env:
         GH_RELEASE_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}

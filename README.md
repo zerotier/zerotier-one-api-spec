@@ -36,17 +36,26 @@ Releases contain the openapi and json-schema files.
  
 Try to use [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/#summary) messages if you want. They will appear in the changelog.
 
+This is a multistep process now due to branch protection. 
+
+### Locally, create version: 
+When main is in a state you'd like to create a new release for:
+
+- create a feature branch off `main`
+- `npm version major|minor|patch`
+    This bumps the version and updates the changelog
+- `npm run build`
+  This is a little chicken and eggy. The build script updates the the spec version based on the npm package version, which just got updated above.
+- commit && push 
+- create PR
+- get merged to `main`
+
+### On Github, create release: 
 - Go into the repo's Github Actions
-- Click "npm version && npm publish"
+- Click "tag and release"
 - Click Run Workflow
-- Type "patch", "minor", or "major" and submit
+- Run it off `main`
 
-On the CLI you can do: 
-
-``` sh
-npm version {major,minor,patch}
-npm run release
-```
 
 The url to the latest release of the openapi spec is: `https://github.com/zerotier/zerotier-one-api-spec/releases/latest/download/openapi.yaml` 
 
