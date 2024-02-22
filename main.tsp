@@ -356,7 +356,7 @@ model ControllerNetworkMeta {
 
 @jsonSchema
 model ControllerNetworks {
-  data: ControllerNetworkMeta[];
+  data: ControllerNetwork[];
   meta: {
     networkCount: uSafeint;
   };
@@ -395,7 +395,7 @@ model ControllerNetworkProps {
 @jsonSchema
 model ControllerNetworkMember {
   @key id: ZTAddress;
-  ...ControllerNetworkMemberProps;
+  ...OptionalProperties<ControllerNetworkMemberProps>;
   address: ZTAddress;
   authenticationExpiryTime: uSafeint;
   capabilities: uSafeint[];
@@ -426,6 +426,7 @@ model ControllerNetworkMemberProps {
   authorized: boolean;
   activeBridge: boolean;
   ipAssignments: IP[];
+  name: string;
   noAutoAssignIps: boolean;
   ssoExempt: boolean;
 }
