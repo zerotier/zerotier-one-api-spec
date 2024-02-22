@@ -21,6 +21,12 @@ This integration test requires zerotier-one to be running. It may change configu
 AUTH_TOKEN=$(cat /path/to/authtoken.secret) npm test
 ```
 
+If you have a pre-release version of zerotier-one try:
+
+``` sh
+ENABLE_UNSTABLE=1 npm t
+```
+
 
 ## missing features
 Features not implemented by typespec yet
@@ -44,10 +50,9 @@ When main is in a state you'd like to create a new release for:
 - create a feature branch off `main`
 - `npm version major|minor|patch`
     This bumps the version and updates the changelog
-- `npm run build`
-  This is a little chicken and eggy. The build script updates the the spec version based on the npm package version, which just got updated above.
 - commit && push 
 - create PR
+- when the action finishes, you can check the output artifacts index.html
 - get merged to `main`
 
 ### On Github, create release: 

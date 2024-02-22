@@ -15,6 +15,8 @@ if (!process.env.AUTH_TOKEN) {
   process.exit(1);
 }
 
+const isNextApiVersion = process.env.ENABLE_UNSTABLE;
+
 function createCreateClient() {
   // AUTH_TOKEN=`cat ~/Library/Application\ Support/ZeroTier/One/authtoken.secret ` npm t
   const authToken = process.env.AUTH_TOKEN;
@@ -118,7 +120,7 @@ describe("API exercise", async function () {
     assert.ok(data.includes(network_id));
   });
 
-  it("Creates a  controller network member", async () => {
+  it("Creates a controller network member", async () => {
     const { data } = await client.POST(
       "/controller/network/{network_id}/member/{node_id}",
       {
@@ -161,15 +163,6 @@ describe("API exercise", async function () {
     const validator = createValidator("ControllerNetworkMember");
 
     assertValid(validator, data);
-  });
-
-  it("Deletes the network by ID", async () => {
-    const { data: networkData3 } = await client.DELETE(
-      "/controller/network/{network_id}",
-      { params: { path: { network_id } } },
-    );
-    const networkDelValidator = createValidator("ControllerNetwork");
-    assertValid(networkDelValidator, networkData3);
   });
 
   describe("Joining networks", async () => {
@@ -218,23 +211,36 @@ describe("API exercise", async function () {
       assertValid(validator, data);
     });
   });
-  /// unstable
-  it("Lists full networks", async () => {
-    const { data, response } = await client.GET("/unstable/controller/network");
-    if (response.status !== 404) {
+
+  describe("Unstable APIs", { skip: !isNextApiVersion }, async () => {
+    it("Sets the member name", async () => {
+      const { data } = await client.POST(
+        "/controller/network/{network_id}/member/{node_id}",
+        {
+          params: { path: { network_id, node_id } },
+          body: { authorized: true, name: "bob" },
+        },
+      );
+      assert(data);
+
+      const validator = createValidator("ControllerNetworkMember");
+      assertValid(validator, data);
+    });
+
+    it("Lists full networks", async () => {
+      const { data } = await client.GET("/unstable/controller/network");
       assert(data);
 
       const networksValidator = createValidator("ControllerNetworks");
 
       assertValid(networksValidator, data);
-    }
-  });
+    });
 
-  it("Lists full network members", async () => {
-    const { data, response } = await client.GET(
-      "/unstable/controller/network/{network_id}/member",
-    );
-    if (response.status !== 404) {
+    it("Lists full network members", async () => {
+      const { data } = await client.GET(
+        "/unstable/controller/network/{network_id}/member",
+        { params: { path: { network_id } } },
+      );
       assert(data);
 
       const networksValidator = createValidator(
@@ -242,6 +248,29 @@ describe("API exercise", async function () {
       );
 
       assertValid(networksValidator, data);
-    }
+    });
+
+    it("Gets the member name", async () => {
+      const { data } = await client.GET(
+        "/controller/network/{network_id}/member/{node_id}",
+        {
+          params: { path: { network_id, node_id } },
+        },
+      );
+      assert(data);
+      assert.equal("bob", data.name);
+
+      const validator = createValidator("ControllerNetworkMember");
+      assertValid(validator, data);
+    });
   });
+
+  // it("Deletes the network by ID", async () => {
+  //   const { data } = await client.DELETE(
+  //     "/controller/network/{network_id}",
+  //     { params: { path: { network_id } } },
+  //   );
+  //     const networkDelValidator = createValidator("ControllerNetwork");
+  //     assertValid(networkDelValidator, data);
+  // });
 });
