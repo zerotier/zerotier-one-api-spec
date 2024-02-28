@@ -3,7 +3,7 @@
   "repository": "https://github.com/zerotier/zerotier-one-api-spec",
   "scripts": {
     "start": "run-s build watch",
-    "test": "tsx test/*test.ts",
+    "test": "borp",
     "build": "run-s pre-compile compile lint build:*",
     "lint": "run-p lint:*",
     "pre-compile": "run-p depcheck format-spec format-code variables",
@@ -39,7 +39,6 @@
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "auto-changelog": "^2.4.0",
-    "better-ajv-errors": "^1.2.0",
     "depcheck": "^1.4.7",
     "eslint": "^8.56.0",
     "gh-release": "^7.0.2",
@@ -48,7 +47,9 @@
     "openapi-typescript": "^7.0.0-next.7",
     "openapi-typescript-helpers": "^0.0.6",
     "prettier": "^3.2.5",
-    "tsx": "^4.7.0",
     "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "borp": "^0.9.1"
   }
 }
