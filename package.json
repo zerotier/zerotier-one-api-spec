@@ -24,7 +24,7 @@
     "watch:compile": "npm run compile -- --watch",
     "watch:serve": "redocly preview-docs ./tsp-output/@typespec/openapi3/openapi.yaml --use-community-edition"
   },
-  "version": "1.0.2",
+  "version": "1.1.0",
   "type": "module",
   "dependencies": {
     "@redocly/cli": "1.7",
