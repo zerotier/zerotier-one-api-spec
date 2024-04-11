@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "borp": "^0.9.1",
+    "semver": "^7.6.0",
     "testcontainers": "^10.8.2"
   }
 }
