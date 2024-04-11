@@ -226,7 +226,7 @@ model NodeStatus {
   clock: uSafeint;
   config: {
     settings: {
-      allowManagementFrom?: IP[];
+      allowManagementFrom?: IPSlashPort[];
       allowTcpFallbackRelay: boolean;
       forceTcpRelay: boolean;
       listeningOn: IPSlashPort[];
