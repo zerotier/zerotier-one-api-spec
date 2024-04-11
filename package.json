@@ -50,6 +50,7 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "borp": "^0.9.1"
+    "borp": "^0.9.1",
+    "testcontainers": "^10.8.2"
   }
 }
