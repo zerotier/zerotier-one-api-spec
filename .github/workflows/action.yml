@@ -23,14 +23,9 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-      - name: Install zerotier-one
-        run: curl -s https://install.zerotier.com/ | sudo bash
 
       - run: npm ci
       - run: npm run build
-
-      - name: Set authtoken
-        run: echo "AUTH_TOKEN=$(sudo cat /var/lib/zerotier-one/authtoken.secret)" >> $GITHUB_ENV
 
       - name: Run tests
         run: npm test
