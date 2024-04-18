@@ -1,7 +1,11 @@
-name: tag and release
+name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      newversion:
+        description: 'npm version {major,minor,patch,premajor,preminor,prepatch,prerelease}'
+        required: true
 
 permissions:
   contents: write
@@ -9,25 +13,38 @@ jobs:
   version_and_release:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        # fetch full history so things like auto-changelog work properly
-        fetch-depth: 0
+      - name: 'Generate token'
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.BOT_APP_ID }}
+          private_key: ${{ secrets.BOT_PRIVATE_KEY }}
 
-    - name: Install zerotier-one
-      run: curl -s https://install.zerotier.com/ | sudo bash
+      - name: 'Checking out code'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate_token.outputs.token }}
 
-    - name: Set auth token
-      run: echo "AUTH_TOKEN=$(sudo cat /var/lib/zerotier-one/authtoken.secret)" >> $GITHUB_ENV
+      - name: 'Setting up Node'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
 
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build
-    - run: npm test
-    - run: npm run release
-      env:
-        GH_RELEASE_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Install Node Dependencies'
+        run: npm ci
+
+      - name: 'Build'
+        run: npm run build
+
+      - name: 'Test'
+        run: npm test
+
+      - name: 'git config'
+        run: git config --global user.email "wrankles@zerotier.com" && git config --global user.name "wrankles"
+
+      - name: 'Create Release'
+        run: npm run release -- ${{ github.event.inputs.newversion }}
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
