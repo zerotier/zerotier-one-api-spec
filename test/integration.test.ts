@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, it, before } from "node:test";
 import assert from "node:assert";
-import semver from 'semver'
+import semver from "semver";
 
 import { GenericContainer } from "testcontainers";
 import createClient from "openapi-fetch";
@@ -15,7 +15,7 @@ import { AnyValidateFunction } from "ajv/dist/core.js";
 const Ajv = _Ajv.default;
 const addFormats = _addFormats.default;
 
-const ZT_VERSION = process.env.ZT_VERSION || "1.12.2"
+const ZT_VERSION = process.env.ZT_VERSION || "1.12.2";
 
 function createCreateClient(token: string, port: number) {
   const authToken = token;
@@ -57,7 +57,7 @@ function assertValid(
 
 const ZEROTIER_API_SECRET = "asdf";
 
-describe("API exercise", async function() {
+describe("API exercise", async function () {
   let network_id: string;
   const node_id = "1122334455";
   let container;
@@ -81,7 +81,7 @@ describe("API exercise", async function() {
     client = createCreateClient(ZEROTIER_API_SECRET, apiPort);
   });
 
-  describe("GET endpoints", async function() {
+  describe("GET endpoints", async function () {
     const map: { path: PathsWithMethod<paths, "get">; id: string }[] = [
       { path: "/status", id: "NodeStatus" },
       { path: "/controller", id: "ControllerStatus" },
@@ -227,64 +227,67 @@ describe("API exercise", async function() {
     });
   });
 
-  describe("Unstable APIs", { skip: semver.lte(ZT_VERSION, "1.12.2") }, async () => {
-    it("Sets the member name", async () => {
-      const { data } = await client.POST(
-        "/controller/network/{network_id}/member/{node_id}",
-        {
-          params: { path: { network_id, node_id } },
-          body: { authorized: true, name: "bob" },
-        },
-      );
-      assert(data);
+  describe(
+    "Unstable APIs",
+    { skip: semver.lte(ZT_VERSION, "1.12.2") },
+    async () => {
+      it("Sets the member name", async () => {
+        const { data } = await client.POST(
+          "/controller/network/{network_id}/member/{node_id}",
+          {
+            params: { path: { network_id, node_id } },
+            body: { authorized: true, name: "bob" },
+          },
+        );
+        assert(data);
 
-      const validator = createValidator("ControllerNetworkMember");
-      assertValid(validator, data);
-    });
+        const validator = createValidator("ControllerNetworkMember");
+        assertValid(validator, data);
+      });
 
-    it("Lists full networks", async () => {
-      const { data } = await client.GET("/unstable/controller/network");
-      assert(data);
+      it("Lists full networks", async () => {
+        const { data } = await client.GET("/unstable/controller/network");
+        assert(data);
 
-      const networksValidator = createValidator("ControllerNetworks");
+        const networksValidator = createValidator("ControllerNetworks");
 
-      assertValid(networksValidator, data);
-    });
+        assertValid(networksValidator, data);
+      });
 
-    it("Lists full network members", async () => {
-      const { data } = await client.GET(
-        "/unstable/controller/network/{network_id}/member",
-        { params: { path: { network_id } } },
-      );
-      assert(data);
+      it("Lists full network members", async () => {
+        const { data } = await client.GET(
+          "/unstable/controller/network/{network_id}/member",
+          { params: { path: { network_id } } },
+        );
+        assert(data);
 
-      const networksValidator = createValidator(
-        "ControllerNetworkMemberListFull",
-      );
+        const networksValidator = createValidator(
+          "ControllerNetworkMemberListFull",
+        );
 
-      assertValid(networksValidator, data);
-    });
+        assertValid(networksValidator, data);
+      });
 
-    it("Gets the member name", async () => {
-      const { data } = await client.GET(
-        "/controller/network/{network_id}/member/{node_id}",
-        {
-          params: { path: { network_id, node_id } },
-        },
-      );
-      assert(data);
-      assert.equal("bob", data.name);
+      it("Gets the member name", async () => {
+        const { data } = await client.GET(
+          "/controller/network/{network_id}/member/{node_id}",
+          {
+            params: { path: { network_id, node_id } },
+          },
+        );
+        assert(data);
+        assert.equal("bob", data.name);
 
-      const validator = createValidator("ControllerNetworkMember");
-      assertValid(validator, data);
-    });
-  });
+        const validator = createValidator("ControllerNetworkMember");
+        assertValid(validator, data);
+      });
+    },
+  );
 
   it("Deletes the network by ID", async () => {
-    const { data } = await client.DELETE(
-      "/controller/network/{network_id}",
-      { params: { path: { network_id } } },
-    );
+    const { data } = await client.DELETE("/controller/network/{network_id}", {
+      params: { path: { network_id } },
+    });
     const networkDelValidator = createValidator("ControllerNetwork");
     assertValid(networkDelValidator, data);
   });
