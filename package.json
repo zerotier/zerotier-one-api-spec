@@ -22,7 +22,7 @@
     "watch:compile": "npm run compile -- --watch",
     "watch:serve": "redocly preview-docs ./tsp-output/@typespec/openapi3/openapi.yaml --use-community-edition"
   },
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "dependencies": {
     "@redocly/cli": "1.7",
@@ -45,7 +45,7 @@
     "openapi-typescript-helpers": "^0.0.6",
     "prettier": "^3.2.5",
     "release-it": "^17.2.0",
-      "typescript": "^5.3.3",
+    "typescript": "^5.3.3",
     "borp": "^0.9.1",
     "semver": "^7.6.0",
     "testcontainers": "^10.8.2"
