@@ -5,10 +5,10 @@
   "github": {
     "release": true,
     "assets": ["tsp-output/@typespec/openapi3/openapi.yaml","tsp-output/@typespec/json-schema/json-schema.json"],
-    "releaseNotes": "npx auto-changelog -p --stdout -u --template https://raw.githubusercontent.com/release-it/release-it/679bd0e2480d2e04aea4f8d5ecc00183dbd60c05/templates/keepachangelog.hbs --starting-version=${latestTag} --ending-version=${tagName}"
+    "releaseNotes": "npx auto-changelog -p --commit-limit=false --stdout -u --template https://raw.githubusercontent.com/release-it/release-it/679bd0e2480d2e04aea4f8d5ecc00183dbd60c05/templates/keepachangelog.hbs --starting-version=${latestTag} --ending-version=${tagName}"
   },
    "git": {
-    "changelog": "npx auto-changelog -p --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/679bd0e2480d2e04aea4f8d5ecc00183dbd60c05/templates/keepachangelog.hbs"
+    "changelog": "npx auto-changelog -p --stdout --commit-limit=false -u --template https://raw.githubusercontent.com/release-it/release-it/679bd0e2480d2e04aea4f8d5ecc00183dbd60c05/templates/keepachangelog.hbs"
   },
   "hooks": {
       "after:bump": ["npm run build", "npx auto-changelog -p"]
