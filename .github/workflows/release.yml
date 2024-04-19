@@ -44,7 +44,12 @@ jobs:
       - name: 'git config'
         run: git config --global user.email "wrankles@zerotier.com" && git config --global user.name "wrankles"
 
+      - name: 'Bump Version'
+        run: npx release-it --ci -VV --no-github.release ${{ github.event.inputs.newversion }} --template keepachangelog
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+
       - name: 'Create Release'
-        run: npm run release -- ${{ github.event.inputs.newversion }}
+        run: npx release-it --ci -VV --no-increment --no-git --template compact
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
