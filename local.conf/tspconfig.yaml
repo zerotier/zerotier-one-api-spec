@@ -4,4 +4,3 @@ emit:
 options:
   "@typespec/json-schema":
     file-type: "json"
-    bundleId: local.conf.schema.json
