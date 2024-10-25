@@ -1,5 +1,5 @@
 /node_modules/
-/tsp-output/
+**/tsp-output/
 /.DS_Store
 /dist/
 .DS_Store
