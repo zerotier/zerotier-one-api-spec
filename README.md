@@ -15,16 +15,10 @@ npm start
 Open http://localhost:8080
 
 ## test
-This integration test requires zerotier-one to be running. It may change configuration of your node! It runs in github actions too.
+The integration test requires docker to be running. 
 
 ``` sh
-AUTH_TOKEN=$(cat /path/to/authtoken.secret) npm test
-```
-
-If you have a pre-release version of zerotier-one try:
-
-``` sh
-ENABLE_UNSTABLE=1 npm t
+npm test
 ```
 
 
