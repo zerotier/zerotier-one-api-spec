@@ -452,13 +452,9 @@ scalar ZTAddress extends string;
 @pattern("[a-f0-9]{16}")
 scalar ZTNetworkID extends string;
 
-@format("ipv4")
 scalar IPv4 extends string;
-
-@format("ipv6")
 scalar IPv6 extends string;
-
-alias IP = IPv4 | IPv6;
+scalar IP extends string;
 
 scalar IPSlashPort extends string;
 
@@ -491,7 +487,7 @@ model NetworkRule extends Record<unknown> {
 }
 
 model NetworkDNS {
-  domain: domain | "";
+  domain: domain;
   servers: IP[];
 }
 
@@ -499,7 +495,6 @@ model NetworkDNS {
 @maxItems(0)
 model EmptyArray is Array<unknown>;
 
-@format("hostname")
 scalar domain extends string;
 
 @jsonSchema
