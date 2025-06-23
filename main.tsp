@@ -403,7 +403,7 @@ model ControllerNetworkMember {
   creationTime: uSafeint;
   identity?: string;
   lastAuthorizedCredential: string | null;
-  lastAuthorizedCredentialType: string;
+  lastAuthorizedCredentialType: string | null;
   lastAuthorizedTime: uSafeint;
   lastDeauthorizedTime: uSafeint;
   nwid: ZTNetworkID;
