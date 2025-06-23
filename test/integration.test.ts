@@ -57,7 +57,7 @@ function assertValid(
 
 const ZEROTIER_API_SECRET = "asdf";
 
-describe("API exercise", async function() {
+describe("API exercise", async function () {
   let network_id: string;
   const node_id = "1122334455";
   let container;
@@ -81,7 +81,7 @@ describe("API exercise", async function() {
     client = createCreateClient(ZEROTIER_API_SECRET, apiPort);
   });
 
-  describe("GET endpoints", async function() {
+  describe("GET endpoints", async function () {
     const map: { path: PathsWithMethod<paths, "get">; id: string }[] = [
       { path: "/status", id: "NodeStatus" },
       { path: "/controller", id: "ControllerStatus" },
