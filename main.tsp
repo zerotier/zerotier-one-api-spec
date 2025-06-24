@@ -1,5 +1,6 @@
 import "@typespec/http";
 import "@typespec/openapi";
+import "@typespec/openapi3";
 import "@typespec/json-schema";
 import "./variables.tsp";
 
@@ -402,7 +403,7 @@ model ControllerNetworkMember {
   creationTime: uSafeint;
   identity?: string;
   lastAuthorizedCredential: string | null;
-  lastAuthorizedCredentialType: string;
+  lastAuthorizedCredentialType: string | null;
   lastAuthorizedTime: uSafeint;
   lastDeauthorizedTime: uSafeint;
   nwid: ZTNetworkID;
@@ -458,7 +459,11 @@ scalar IPv4 extends string;
 @format("ipv6")
 scalar IPv6 extends string;
 
-alias IP = IPv4 | IPv6;
+@oneOf
+union IP {
+  ipv4: IPv4,
+  ipv6: IPv6,
+}
 
 scalar IPSlashPort extends string;
 
