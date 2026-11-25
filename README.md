@@ -36,7 +36,7 @@ Releases contain the openapi and json-schema files.
  
 Try to use [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/#summary) messages if you want. They will appear in the changelog.
 
-1. On a new branch, set the new version (`patch`, `minor` or `major`):
+1. On a new branch from an up-to-date `main`, set the new version (`patch`, `minor` or `major`):
    ``` sh
    npm version minor --no-git-tag-version
    ```
@@ -47,7 +47,7 @@ Try to use [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/#
 3. Commit `package.json`, `package-lock.json` and `CHANGELOG.md`, and open a pull request.
 4. After the merge, go to the Actions Tab.
 5. Click Release on the left.
-6. Click Run Workflow on the right, then click Run Workflow.
+6. Click Run Workflow on the right. Keep the `main` branch, and click Run Workflow.
 
 The workflow tags the head of `main` with the version in `package.json`. Then it makes the release. It does not push to `main`.
 
