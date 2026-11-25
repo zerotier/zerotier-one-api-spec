@@ -410,7 +410,7 @@ model ControllerNetworkMember {
   objtype: "member";
   remoteTraceLevel: uSafeint;
   remoteTraceTarget: string | null;
-  revision: VersionDigit;
+  revision: uSafeint;
   tags: unknown; //TODO
   vMajor: VersionDigit | -1;
   vMinor: VersionDigit | -1;
