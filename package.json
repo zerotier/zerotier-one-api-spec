@@ -15,14 +15,14 @@
     "format-code": "prettier --write **/*.ts",
     "lint:openapi": "redocly lint tsp-output/@typespec/openapi3/openapi.yaml",
     "lint:code": "eslint .",
-    "release": "release-it --ci",
+    "release": "release-it --ci --no-increment",
     "variables": "printf 'alias Version = \"%s\";\n' $npm_package_version > variables.tsp",
     "watch": "run-p watch:*",
     "watch:compile": "npm run compile -- --watch",
     "check-deps": "knip --dependencies",
     "watch:docs": "node --watch-path=./tsp-output/@typespec/openapi3 ./node_modules/@redocly/cli/bin/cli.js build-docs tsp-output/@typespec/openapi3/openapi.yaml -o ./dist/index.html"
   },
-  "version": "1.2.0",
+  "version": "1.3.0",
   "type": "module",
   "dependencies": {
     "@eslint/js": "^10.0.1",
