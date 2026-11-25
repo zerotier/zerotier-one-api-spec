@@ -272,7 +272,7 @@ model JoinedNetwork extends Record<unknown> {
 
   authenticationExpiryTime?: uSafeint;
   name: string;
-  netconfRevision: uint16;
+  netconfRevision: uSafeint;
   portDeviceName: string;
   portError: int32;
   routes: {
