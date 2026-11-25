@@ -8,12 +8,10 @@ using TypeSpec.Http;
 using TypeSpec.OpenAPI;
 using TypeSpec.JsonSchema;
 
-@service({
-  title: "ZeroTierOne Service",
+@service(#{ title: "ZeroTierOne Service" })
+@info(#{
   version: Version,
-})
-@info({
-  license: {
+  license: #{
     name: "Apache 2.0",
     url: "http://www.apache.org/licenses/LICENSE-2.0.html",
   },
@@ -21,12 +19,12 @@ using TypeSpec.JsonSchema;
 @useAuth(ApiKeyAuth<ApiKeyLocation.header, "X-ZT1-AUTH">)
 @server(" http://localhost:9993", "Service API")
 @doc("""
-<p>This API controls the ZeroTier service that runs in the background on your computer. This is how zerotier-cli, and the macOS and Windows apps control the service. </p>
-<p>API requests must be authenticated via an authentication token. ZeroTier One saves this token in the authtoken.secret file in its working directory. This token may be supplied via the X-ZT1-Auth HTTP request header. </p>
-<p>For example: <code>curl -H "X-ZT1-Auth: $TOKEN" http://localhost:9993/status</code> </p>
-<p>The token can be found in: <ul> <li>Mac :: ~/Library/Application Support/ZeroTier/authtoken.secret</li> <li>Windows :: \\ProgramData\\ZeroTier\\One</li> <li>Linux :: /var/lib/zerotier-one</li> </ul> </p>
-<p>Learn more about the spec at <a href="https://github.com/zerotier/zerotier-one-api-spec">github</a></p>
-""")
+  <p>This API controls the ZeroTier service that runs in the background on your computer. This is how zerotier-cli, and the macOS and Windows apps control the service. </p>
+  <p>API requests must be authenticated via an authentication token. ZeroTier One saves this token in the authtoken.secret file in its working directory. This token may be supplied via the X-ZT1-Auth HTTP request header. </p>
+  <p>For example: <code>curl -H "X-ZT1-Auth: $TOKEN" http://localhost:9993/status</code> </p>
+  <p>The token can be found in: <ul> <li>Mac :: ~/Library/Application Support/ZeroTier/authtoken.secret</li> <li>Windows :: \\ProgramData\\ZeroTier\\One</li> <li>Linux :: /var/lib/zerotier-one</li> </ul> </p>
+  <p>Learn more about the spec at <a href="https://github.com/zerotier/zerotier-one-api-spec">github</a></p>
+  """)
 namespace Root {
   @tag("Node Status")
   @route("/status")
@@ -48,9 +46,10 @@ namespace Root {
     @doc("Joined Network by ID")
     @summary("Get Joined Network by ID")
     @get
-    op getNetwork(
-      @path network_id: ZTNetworkID,
-    ): JoinedNetwork | AuthError | NotFoundError;
+    op getNetwork(@path network_id: ZTNetworkID):
+      | JoinedNetwork
+      | AuthError
+      | NotFoundError;
 
     @summary("Join or Update Network Settings")
     @post
@@ -61,9 +60,10 @@ namespace Root {
 
     @summary("Leave Network")
     @delete
-    op delNetwork(
-      @path network_id: ZTNetworkID,
-    ): LeaveResult | AuthError | NotFoundError;
+    op delNetwork(@path network_id: ZTNetworkID):
+      | LeaveResult
+      | AuthError
+      | NotFoundError;
   }
 
   @tag("Peers")
@@ -78,9 +78,10 @@ namespace Root {
     @doc("Get Peer by ID")
     @summary("Get Joined Network by ID")
     @get
-    op getNetwork(
-      @path network_id: ZTNetworkID,
-    ): Peer | AuthError | NotFoundError;
+    op getNetwork(@path network_id: ZTNetworkID):
+      | Peer
+      | AuthError
+      | NotFoundError;
   }
 
   @tag("Controller")
@@ -103,9 +104,10 @@ namespace Root {
         @doc("Get details for a network by its ID.")
         @summary("Get Network by ID")
         @get
-        op readNetwork(
-          @path network_id: ZTNetworkID,
-        ): ControllerNetwork | AuthError | NotFoundError;
+        op readNetwork(@path network_id: ZTNetworkID):
+          | ControllerNetwork
+          | AuthError
+          | NotFoundError;
 
         @summary("Create or Update Network")
         @post
@@ -116,9 +118,10 @@ namespace Root {
 
         @summary("Delete Network")
         @delete
-        op deleteNetwork(
-          @path network_id: ZTNetworkID,
-        ): ControllerNetwork | AuthError | NotFoundError;
+        op deleteNetwork(@path network_id: ZTNetworkID):
+          | ControllerNetwork
+          | AuthError
+          | NotFoundError;
 
         @route("/member")
         namespace networkMembers {
@@ -173,7 +176,6 @@ namespace Root {
           }
         }
       }
-      @route("/")
       namespace randomNetwork {
         @doc("Create a new network with a random ID.")
         @summary("Generate Random Network ID")
@@ -272,7 +274,7 @@ model JoinedNetwork extends Record<unknown> {
 
   authenticationExpiryTime?: uSafeint;
   name: string;
-  netconfRevision: uint16;
+  netconfRevision: uSafeint;
   portDeviceName: string;
   portError: int32;
   routes: {
@@ -410,7 +412,7 @@ model ControllerNetworkMember {
   objtype: "member";
   remoteTraceLevel: uSafeint;
   remoteTraceTarget: string | null;
-  revision: VersionDigit;
+  revision: uSafeint;
   tags: unknown; //TODO
   vMajor: VersionDigit | -1;
   vMinor: VersionDigit | -1;
@@ -459,7 +461,7 @@ scalar IPv4 extends string;
 @format("ipv6")
 scalar IPv6 extends string;
 
-@oneOf
+@TypeSpec.OpenAPI.oneOf
 union IP {
   ipv4: IPv4,
   ipv6: IPv6,
@@ -482,11 +484,14 @@ scalar uSafeint extends safeint;
 @minItems(2)
 @maxItems(2)
 model NetworkCap is integer[];
+// Keeps the schema name that spec 1.2.0 and earlier published.
+@friendlyName("NetworkCapsItem")
 model NetworkCaps is NetworkCap[];
 
 @minItems(2)
 @maxItems(2)
 model NetworkTag is integer[];
+@friendlyName("NetworkTagsItem")
 model NetworkTags is NetworkTag[];
 
 model NetworkRule extends Record<unknown> {
@@ -502,6 +507,7 @@ model NetworkDNS {
 
 @minItems(0)
 @maxItems(0)
+@friendlyName("EmptyArrayItem")
 model EmptyArray is Array<unknown>;
 
 @format("hostname")

@@ -12,7 +12,7 @@ npm install
 npm start
 ```
 
-Open http://localhost:8080
+Open `dist/index.html`. It is rebuilt after each change to `main.tsp`.
 
 ## test
 The integration test requires docker to be running. 
