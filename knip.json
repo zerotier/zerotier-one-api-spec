@@ -1,0 +1,10 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreDependencies": [
+    "@typespec/json-schema",
+    "@typespec/openapi",
+    "@typespec/openapi3",
+    "@typespec/prettier-plugin-typespec"
+  ],
+  "ignoreUnresolved": ["/tmp/schema.ts"]
+}
