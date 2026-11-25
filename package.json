@@ -15,7 +15,7 @@
     "format-code": "prettier --write **/*.ts",
     "lint:openapi": "redocly lint tsp-output/@typespec/openapi3/openapi.yaml",
     "lint:code": "eslint .",
-    "release": "release-it --ci",
+    "release": "release-it --ci --no-increment",
     "variables": "printf 'alias Version = \"%s\";\n' $npm_package_version > variables.tsp",
     "watch": "run-p watch:*",
     "watch:compile": "npm run compile -- --watch",

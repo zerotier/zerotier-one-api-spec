@@ -2,10 +2,6 @@ name: Release
 
 on:
   workflow_dispatch:
-    inputs:
-      newversion:
-        description: 'npm version {major,minor,patch,premajor,preminor,prepatch,prerelease}'
-        required: true
 
 permissions:
   contents: write
@@ -45,6 +41,6 @@ jobs:
         run: git config --global user.email "wrankles@zerotier.com" && git config --global user.name "wrankles"
 
       - name: 'Create Release'
-        run: npm run release -- ${{ github.event.inputs.newversion }}
+        run: npm run release
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
